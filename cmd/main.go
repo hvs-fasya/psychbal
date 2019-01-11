@@ -12,7 +12,6 @@ import (
 
 	"github.com/hvs-fasya/psychbal/internal/api"
 	"github.com/hvs-fasya/psychbal/internal/api/handlers/front"
-	"github.com/hvs-fasya/psychbal/internal/api/handlers/ws"
 	"github.com/hvs-fasya/psychbal/internal/engine"
 	"github.com/hvs-fasya/psychbal/internal/migrate"
 )
@@ -79,10 +78,10 @@ func main() {
 			log.Fatal().Msg("No https certs")
 		}
 	}
-	ws.InitWebsocketsHandling()
+	//ws.InitWebsocketsHandling()
 	front.InitFront(opts.StaticPath)
 	srv := api.Server{}
-	connstr := ":" + opts.APIPort
+	connstr := "localhost:" + opts.APIPort
 	srv.Run(connstr)
 }
 

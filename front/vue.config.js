@@ -6,7 +6,7 @@ module.exports = {
     inline: true,
     proxy: {
       '/api/v1/':{
-        target: 'http://localhost:8080'
+        target: 'https://localhost:8080'
       }
     }
   },
