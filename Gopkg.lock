@@ -2,20 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/go-redis/redis"
-  packages = [
-    ".",
-    "internal",
-    "internal/consistenthash",
-    "internal/hashtag",
-    "internal/pool",
-    "internal/proto",
-    "internal/util"
-  ]
-  revision = "22be8a3eaf992c828cecb69dc07348313bf08d2e"
-  version = "v6.15.1"
-
-[[projects]]
   name = "github.com/gorilla/context"
   packages = ["."]
   revision = "08b5f424b9271eedf6f9f0ce86cb9396ed337a42"
@@ -28,26 +14,22 @@
   version = "v1.6.2"
 
 [[projects]]
+  name = "github.com/gorilla/schema"
+  packages = ["."]
+  revision = "d0e4c24cff97ae983e9847e0ed5a02dc10013d41"
+  version = "v1.0.2"
+
+[[projects]]
+  name = "github.com/gorilla/securecookie"
+  packages = ["."]
+  revision = "e59506cc896acb7f7bf732d4fdf5e25f7ccd8983"
+  version = "v1.1.1"
+
+[[projects]]
   name = "github.com/gorilla/websocket"
   packages = ["."]
   revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
   version = "v1.4.0"
-
-[[projects]]
-  branch = "ws-for-design-changes-upfates"
-  name = "github.com/hvs-fasya/chusha"
-  packages = [
-    "internal/api",
-    "internal/api/handlers",
-    "internal/api/handlers/front",
-    "internal/api/handlers/ws",
-    "internal/engine",
-    "internal/migrate",
-    "internal/models",
-    "internal/redis-client",
-    "internal/utils"
-  ]
-  revision = "6ff03afdd0e4a6a09aff27ce42ce475043680c03"
 
 [[projects]]
   name = "github.com/jessevdk/go-flags"
@@ -91,12 +73,6 @@
   revision = "5a8808c14925f69d2228981db113f672ad047e69"
 
 [[projects]]
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
-  version = "v1.2.0"
-
-[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = [
@@ -114,6 +90,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "3d75247177a2133699a46c516e74a759c467d5d29337bf8a1583a7e072a57bc2"
+  inputs-digest = "a725ac5f6b9697e4b0f1987ccc3bcdaea9caedf2f8dfa383ae7744f63f9efca0"
   solver-name = "gps-cdcl"
   solver-version = 1

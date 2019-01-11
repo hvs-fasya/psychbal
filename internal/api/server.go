@@ -1,7 +1,9 @@
 package api
 
 import (
+	"context"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog/log"
@@ -9,6 +11,7 @@ import (
 	"github.com/hvs-fasya/psychbal/internal/api/handlers"
 	"github.com/hvs-fasya/psychbal/internal/api/handlers/front"
 	"github.com/hvs-fasya/psychbal/internal/api/handlers/ws"
+	"github.com/hvs-fasya/psychbal/internal/models"
 )
 
 // Server wraps http server
@@ -28,6 +31,7 @@ func (s *Server) Run(connstr string) {
 // NewRouter Создать - новый роутер
 func NewRouter() *mux.Router {
 	rt := new(mux.Router)
+	rt.Use(checkCookie)
 	// front statics
 	rt.HandleFunc("/alive", handlers.Alive).Methods("GET")
 	rt.HandleFunc("/", front.IndexHandler).Methods("GET")
@@ -74,5 +78,27 @@ func respondOptions(next http.Handler) http.Handler {
 		} else {
 			next.ServeHTTP(w, r)
 		}
+	})
+}
+
+func checkCookie(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cookie, err := r.Cookie(handlers.SessionCookieName)
+		if err != nil {
+			http.Redirect(w, r, "/auth", http.StatusSeeOther)
+			return
+
+		}
+		claimsMap := make(map[string]string)
+		err = handlers.Cookie.Decode(handlers.SessionCookieName, cookie.Value, &claimsMap)
+		if err == nil {
+			user := new(models.User)
+			user.Name = claimsMap["name"]
+			user.ID, _ = strconv.ParseInt(claimsMap["id"], 64, 10)
+
+			ctx := context.WithValue(r.Context(), handlers.CtxUserKey, user)
+			r = r.WithContext(ctx)
+		}
+		next.ServeHTTP(w, r)
 	})
 }

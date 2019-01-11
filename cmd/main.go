@@ -11,7 +11,9 @@ import (
 	"github.com/rs/zerolog/log"
 
 	"github.com/hvs-fasya/psychbal/internal/api"
+	"github.com/hvs-fasya/psychbal/internal/api/handlers"
 	"github.com/hvs-fasya/psychbal/internal/api/handlers/front"
+	"github.com/hvs-fasya/psychbal/internal/api/handlers/ws"
 	"github.com/hvs-fasya/psychbal/internal/engine"
 	"github.com/hvs-fasya/psychbal/internal/migrate"
 )
@@ -31,6 +33,9 @@ var opts struct {
 	LogLevel    int    `long:"log-level" env:"LOG_LEVEL" default:"0" description:"log level debug:0, info: 1, warn: 2, error: 3, fatal: 4, panic:5"`
 	MigrateDown bool   `long:"migrate-down" env:"MIGRATE_DOWN" description:"migrate down and exit"`
 	Timezone    string `long:"timezone" env:"TIMEZONE" default:"Europe/Moscow"  description:"app timezone"`
+
+	CookieHashKey  string `long:"hash-key" env:"HASH_KEY" default:"91C6885CCEDC199A870C8778227E962B" description:"secure cookie hash key"`
+	CookieBlockKey string `long:"block-key" env:"BLOCK_KEY" default:"C8343AB070C9A60A" description:"secure cookie block key"`
 }
 
 func main() {
@@ -65,7 +70,14 @@ func main() {
 		log.Panic().Msg(err.Error())
 	}
 	log.Info().Msgf("DB migrate - %d migrations", n)
-	//инициализация сервера
+
+	//initialize server cookies handling
+	cookieCfg := new(handlers.CookieCfg)
+	cookieCfg.HashKey = []byte(opts.CookieHashKey)
+	cookieCfg.BlockKey = []byte(opts.CookieBlockKey)
+	handlers.InitCookieHandling(cookieCfg)
+
+	//initialize http server
 	err = httpscerts.Check("cert.pem", "key.pem")
 	if err != nil {
 		fmt.Println(err)
@@ -78,10 +90,10 @@ func main() {
 			log.Fatal().Msg("No https certs")
 		}
 	}
-	//ws.InitWebsocketsHandling()
+	ws.InitWebsocketsHandling()
 	front.InitFront(opts.StaticPath)
 	srv := api.Server{}
-	connstr := "localhost:" + opts.APIPort
+	connstr := ":" + opts.APIPort
 	srv.Run(connstr)
 }
 
