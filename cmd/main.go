@@ -26,7 +26,7 @@ var opts struct {
 
 	APIPort string `long:"api-port" env:"API_PORT" default:"8080" description:"api server port"`
 	//FrontPort  string `long:"front-port" env:"FRONT_PORT" default:"8081" description:"front server port"`
-	StaticPath string `long:"static-path" env:"STATIC_PATH" default:"./front/stage/" description:"static files path"`
+	StaticPath string `long:"static-path" env:"STATIC_PATH" default:"./front/dist/" description:"static files path"`
 
 	AppEnv      string `long:"environment" env:"APP_ENV" default:"dev"  description:"app environment"`
 	LogLevel    int    `long:"log-level" env:"LOG_LEVEL" default:"0" description:"log level debug:0, info: 1, warn: 2, error: 3, fatal: 4, panic:5"`
