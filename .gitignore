@@ -1,0 +1,11 @@
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+
+cert.pem
+key.pem
