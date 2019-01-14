@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <LoginForm />
     <q-layout-header>
       <q-toolbar
         color="primary"
@@ -19,6 +20,10 @@
           Quasar App
           <div slot="subtitle">Running on Quasar v{{ $q.version }}</div>
         </q-toolbar-title>
+        <span v-if="$store.state.loggedIn">{{$store.state.user.email}}</span>
+        <q-btn v-if="$store.state.loggedIn" class="float-right" flat @click="Logout()">Выйти</q-btn>
+        <q-btn v-if="!$store.state.loggedIn" flat @click="ShowSignUp()">Зарегистрироваться</q-btn>
+        <q-btn v-if="!$store.state.loggedIn" flat @click="ShowLogin()">Войти</q-btn>
       </q-toolbar>
     </q-layout-header>
 
@@ -72,6 +77,8 @@
 
 <script>
 import { openURL } from 'quasar'
+import {EventBus} from "../event-bus";
+import LoginForm from "../components/LoginForm"
 
 export default {
   name: 'LayoutDefault',
@@ -80,8 +87,28 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop
     }
   },
+  components: {LoginForm},
   methods: {
-    openURL
+    openURL,
+    ShowLogin: function () {
+      EventBus.$emit('user-form-open', 'login')
+    },
+    ShowSignUp: function () {
+      EventBus.$emit('user-form-open', 'signup')
+    },
+    Logout: function () {
+      this.axios.delete('session',{},{jar: true, withCredentials: true})
+        .then(response => {
+          this.$store.commit('setLoggedOut');
+        })
+        .catch(e => {
+          if (e.response.status === 401) {
+            utils.notify401();
+          } else {
+            utils.notify500();
+          }
+        })
+    }
   }
 }
 </script>

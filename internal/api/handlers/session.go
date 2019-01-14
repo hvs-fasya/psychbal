@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/rs/zerolog/log"
 
 	"github.com/hvs-fasya/psychbal/internal/models"
-	"strconv"
 )
 
 //AuthHandler http handler for form.html file

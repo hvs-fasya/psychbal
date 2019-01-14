@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
+import axios from 'axios'
+import axiosCookieJarSupport from 'axios-cookiejar-support'
+import VueAxios from 'vue-axios'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
@@ -12,12 +15,16 @@ import Quasar from 'quasar'
 
 Vue.use(Quasar, {
   config: {}
- })
+ });
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.use(VueAxios, axios);
+Vue.axios.defaults.baseURL = process.env.VUE_APP_ROOT_API;
+axiosCookieJarSupport(axios);
 
 new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');
